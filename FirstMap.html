@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Map with leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <style>
+        body {
+        padding: 0;
+        margin: 0;
+        }
+        
+        html,
+        body,
+        #map {
+        height: 100%;
+        width: 100%;
+        }
+   
+    </style>   
+</head>
+
+<body>
+    <div id = "map" style = "width: 100%; height: 100%"></div>
+    
+    <script>
+        var map = L.map('map').setView([17.487281, 101.721111], 9);
+        
+        var Stadia_OSMBright = L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.{ext}', {
+	        minZoom: 0,
+	        maxZoom: 20,
+	        attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	        ext: 'png'
+        });
+
+        var stadia = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
+            minZoom: 0,
+            maxZoom: 20,
+            attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            ext: 'png'
+        }).addTo(map);
+
+        var Stadia_AlidadeSatellite = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', {
+	        minZoom: 0,
+	        maxZoom: 20,
+	        attribution: '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	        ext: 'jpg'
+        });
+
+        var baseLayers = {
+            "OSM" : Stadia_OSMBright,
+            "Stadia" : stadia,
+            "Satellite" : Stadia_AlidadeSatellite,
+        } 
+        L.control.layers(baseLayers).addTo(map);
+
+        var loei = [
+            ["สกายวอล์ค เชียงคาน", 17.819409, 101.554497],
+            ["อุทยานแห่งชาติภูเรือ", 17.514149, 101.344895],
+            ["อุทยานแห่งชาติภูกระดึง", 16.871239, 101.845684],
+            ["ถนนคนเดินเชียงคาน", 17.897119, 101.660333],
+            ["พระธาตุศรีสองรัก", 17.270038, 101.140786],
+            ["อ่างเก็บน้ำห้วยกระทิง", 17.503757, 101.603004],
+            ["วัดเนรมิตวิปัสสนา", 17.263875, 101.142039],
+            ["ภูทอก", 17.868955, 101.682385],
+            ["พิพิธภัณฑ์ผีตาโขน วัดโพนชัย", 17.274879, 101.148917],
+            ["สวนหินผางาม", 17.050395, 101.743524],
+        ];
+
+        var pinIcon = L.icon({
+            iconUrl: 'pin (1).png',
+
+            iconSize: [30, 30], // size of the icon
+            iconAnchor: [30, 30], // point of the icon which will correspond to marker's location
+        });
+
+        for (var i = 0; i < loei.length; i++) {
+
+        marker = new L.marker([loei[i][1], loei[i][2]], {icon: pinIcon})
+            .bindPopup(loei[i][0])
+            .addTo(map);
+        }
+
+        var legend = L.control({position: 'bottomleft'});
+            legend.onAdd = function(map){
+        var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = 
+            '<p><b>คำอธิบายสัญลักษณ์</b></p>' +
+            '&nbsp;&nbsp;<img src="pin (1).png" width = 4%>' +
+            '&nbsp;&nbsp;สถานที่ท่องเที่ยว จังหวัดเลย';
+        return div;
+        };
+        legend.addTo(map);
+
+        var legend1 = L.control({position: 'bottomright'});
+            legend1.onAdd = function(map){
+        var div = L.DomUtil.create('div', 'legend1');
+            div.innerHTML = 
+            'Created by Sirikanya Srisawong<br>' +
+            'ID: 64103010645 <br>' +
+            '<img src="https://unity.swu.ac.th/wp-content/uploads/2020/07/SWU_Logo_EN_Color.png" width = 20%>' ;
+        return div;
+        };
+        legend1.addTo(map);
+
+    </script> 
+</body>
+</html>
